@@ -1,5 +1,5 @@
 .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata {
-    background-color: #fee7e6;
+    background-color: var(--background-color-error-subtle, #fee7e6);
     border: 1px solid #f6bab9;
     border-radius: 2px;
     padding: 3px 6px;
@@ -10,7 +10,7 @@
 }
 
 .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata.partial-wikidata {
-    background-color: #fef6e7;
+    background-color: var(--background-color-warning-subtle, #fef6e7);
     border-color: #ffd760;
 }
 
@@ -25,13 +25,13 @@
 }
 
 .infobox-export-dialog .wb-monolingualtext-language-name {
-    color: #54595d;
+    color: var(--color-subtle, #54595d);
     font-weight: normal;
 }
 
 .infobox-export-calendar {
     margin-left: .25em;
-    color: #54595d;
+    color: var(--color-subtle, #54595d);
 }
 
 .infobox-export-calendar::before {
@@ -116,4 +116,19 @@
 
 .partial-wikidata.infobox-export-loader {
     background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, #fff 8px, #fff 16px );
+}
+
+@media (prefers-color-scheme: dark) {
+    .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata {
+        border-color: #b32424;
+    }
+
+    .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata.partial-wikidata {
+        border-color: #ac6600;
+    }
+
+    .infobox-export-loader,
+    .partial-wikidata.infobox-export-loader {
+        background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, #000 8px, #000 16px );
+    }
 }

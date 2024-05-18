@@ -345,6 +345,7 @@ export async function showDialog( statements: Statement[] ) {
 		this.$body.append( this.content.$element );
 		this.$body.css( 'overflow-x', 'hidden' );
 		this.$body.css( 'overflow-y', 'auto' );
+		this.$body.css( 'background', 'var(--background-color-base, #fff)' );
 	};
 
 	ExtProcessDialog.prototype.getActionProcess = function ( action: string ) {
