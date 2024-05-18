@@ -129,6 +129,6 @@
 
     .infobox-export-loader,
     .partial-wikidata.infobox-export-loader {
-        background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, #000 8px, #000 16px );
+        background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, var(--box-shadow-color-inverted, #000) 8px, var(--box-shadow-color-inverted, #000) 16px )
     }
 }
