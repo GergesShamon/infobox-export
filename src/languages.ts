@@ -16,20 +16,12 @@ export const allLanguages: string[] = unique( [
 ] );
 
 export const missedLanguages: { [ key: string ]: ItemId } = {
-	ain: 'Q20968488',
-	akk: 'Q32332',
 	atv: 'Q2640863',
-	bua: 'Q33120',
-	chm: 'Q973685',
-	dar: 'Q32332',
 	enf: 'Q29942',
 	evn: 'Q30004',
-	izh: 'Q33559',
 	jdt: 'Q56495',
 	jmy: 'Q53493410',
 	orv: 'Q35228',
-	phn: 'Q36734', // phn-latn or phn-phnx
-	sga: 'Q35308',
 	yrk: 'Q36452'
 };
 
