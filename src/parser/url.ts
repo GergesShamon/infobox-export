@@ -9,7 +9,7 @@ import type { Reference, Snak, Statement } from '../types/wikidata/main';
 import type { EntityIdValue } from '../types/wikidata/values';
 import type { UrlDataValue } from '../types/wikidata/datavalues';
 
-const webArchivePrefix = /^https?:\/\/web\.archive\.org\/web\/(\d{4})(\d{2})(\d{2})\d+\//;
+const webArchivePrefix: RegExp = /^https?:\/\/web\.archive\.org\/web\/(\d{4})(\d{2})(\d{2})\d+\//;
 
 async function addArchiveUrlQualifiers( statement: Statement, archiveUrl: string ): Promise<void> {
 	addQualifierValue(
@@ -45,10 +45,10 @@ async function addArchiveUrlQualifiers( statement: Statement, archiveUrl: string
 
 async function addLanguageQualifier( statement: Statement, context: Context ): Promise<void> {
 	const codes: KeyValue = {};
-	context.$field.find( 'span[lang]' ).each( function () {
+	context.$field.find( 'span[lang]' ).each( function (): void {
 		codes[ $( this ).attr( 'lang' ) ] = true;
 	} );
-	context.$field.find( 'span[data-lang]' ).each( function () {
+	context.$field.find( 'span[data-lang]' ).each( function (): void {
 		codes[ $( this ).data( 'lang' ) ] = true;
 	} );
 	if ( !Object.keys( codes ).length ) {
@@ -56,7 +56,7 @@ async function addLanguageQualifier( statement: Statement, context: Context ): P
 	}
 	const sparql: string = `SELECT ?item WHERE { ?item wdt:P218 ?value . FILTER ( ?value IN ("${ Object.keys( codes ).join( '","' ) }") ) }`;
 	const data: SparqlResponse = await sparqlRequest( sparql );
-	for ( let i = 0; i < data.results.bindings.length; i++ ) {
+	for ( let i: number = 0; i < data.results.bindings.length; i++ ) {
 		const langValue: EntityIdValue = {
 			id: data.results.bindings[ i ].item.value.replace( /^.+\/(Q\d+)$/, '$1' )
 		};
@@ -73,7 +73,7 @@ export async function prepareUrl( context: Context ): Promise<Statement[]> {
 	const statements: Statement[] = [];
 	const $links: JQuery = context.$field.find( 'a[href]' );
 	const references: Reference[] = getReferences( context.$wrapper );
-	$links.each( function () {
+	$links.each( function (): void {
 		const $link: JQuery = $( this );
 		let url: string = $link.attr( 'href' ).replace( /^\/\//, 'https://' );
 		let archiveUrl: string|null;

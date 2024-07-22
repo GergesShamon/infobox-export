@@ -233,7 +233,7 @@ export async function init(): Promise<any> {
 			return;
 		}
 
-		$( '.infobox-export' ).find( 'tr > th + td, tr > td + td' ).each( function () {
+		$( '.infobox-export' ).find( 'tr > th + td, tr > td + td' ).each( function (): void {
 			const $label: JQuery = $( this ).prev();
 			$label.addClass( 'infobox-export-label' );
 		} );
@@ -241,7 +241,7 @@ export async function init(): Promise<any> {
 		const typeIds: ItemId[] = getItemPropertyValues( claims, 'P31' );
 		await preloadAvailableProperties( typeIds );
 	}
-	await Promise.all( $fields.map( async function () {
+	await Promise.all( $fields.map( async function (): Promise<void> {
 		const $field: JQuery = $( this );
 		const propertyId: PropertyId | undefined = $field.attr( 'data-wikidata-property-id' ) as ( PropertyId | undefined );
 		if ( typeof propertyId !== 'undefined' ) {
@@ -260,7 +260,7 @@ export async function init(): Promise<any> {
 			}
 
 			const $fieldQualifiers = $field.closest( 'tr' ).find( '[data-wikidata-qualifier-id]' );
-			$fieldQualifiers.each( function () {
+			$fieldQualifiers.each( function (): void {
 				propertyIds.add( $( this ).data( 'wikidata-qualifier-id' ) );
 			} );
 
@@ -275,7 +275,7 @@ export async function init(): Promise<any> {
 		const $label: JQuery = $field.parent().children( 'th, .infobox-export-label' ).first();
 		const guessedPropertyIds: PropertyId[] = await guessPropertyIdByLabel( $label, itemId, claims );
 		let guessedProperties: Property[] = ( await Promise.all( guessedPropertyIds.map(
-			async ( propertyId: PropertyId ) => await getOrLoadProperty( propertyId )
+			async ( propertyId: PropertyId ): Promise<Property> => await getOrLoadProperty( propertyId )
 		) ) ).filter( ( property: Property | undefined ) => property );
 
 		// If at least one of these properties with same name and datatype already filled,

@@ -1,6 +1,7 @@
 import type { Reference, SnaksObject } from '../types/wikidata/main';
 import { getConfig } from '../config';
 import { createTimeValue } from './time';
+import type { TimeValue } from '../types/wikidata/values';
 
 /**
  * Extract reference URL
@@ -8,10 +9,10 @@ import { createTimeValue } from './time';
 export function getReferences( $field: JQuery ): Reference[] {
 	const references: Reference[] = [];
 	const $notes: JQuery = $field.find( 'sup.reference a' );
-	for ( let i = 0; i < $notes.length; i++ ) {
+	for ( let i: number = 0; i < $notes.length; i++ ) {
 		// @ts-ignore
 		const $externalLinks: JQuery = $( decodeURIComponent( $notes[ i ].hash ).replace( /[!"$%&'()*+,./:;<=>?@[\\\]^`{|}~]/g, '\\$&' ) + ' a[rel="nofollow"]' );
-		for ( let j = 0; j < $externalLinks.length; j++ ) {
+		for ( let j: number = 0; j < $externalLinks.length; j++ ) {
 			const $externalLink: JQuery = $( $externalLinks.get( j ) );
 			if ( !$externalLink.attr( 'href' ).match( /(wikipedia.org|webcitation.org|archive.is)/ ) ) {
 				const source: Reference = {
@@ -30,9 +31,9 @@ export function getReferences( $field: JQuery ): Reference[] {
 
 				// P813
 				if ( getConfig( 'mark-checked' ) !== '' ) {
-					const $accessed = $externalLinks.parent().find( 'small:contains("' + getConfig( 'mark-checked' ) + '")' );
+					const $accessed: JQuery = $externalLinks.parent().find( 'small:contains("' + getConfig( 'mark-checked' ) + '")' );
 					if ( $accessed.length ) {
-						const accessDate = createTimeValue( $accessed.first().text() );
+						const accessDate: TimeValue = createTimeValue( $accessed.first().text() );
 						if ( accessDate ) {
 							source.snaks.P813 = [ {
 								property: 'P813',
@@ -49,9 +50,9 @@ export function getReferences( $field: JQuery ): Reference[] {
 
 				// P1065 + P2960
 				if ( getConfig( 'mark-archived' ) !== '' ) {
-					const $archiveLinks = $externalLinks.filter( 'a:contains("' + getConfig( 'mark-archived' ) + '")' );
+					const $archiveLinks: JQuery = $externalLinks.filter( 'a:contains("' + getConfig( 'mark-archived' ) + '")' );
 					if ( $archiveLinks.length ) {
-						const $archiveLink = $archiveLinks.first();
+						const $archiveLink: JQuery = $archiveLinks.first();
 						source.snaks.P1065 = [ {
 							property: 'P1065',
 							datatype: 'url',
@@ -62,7 +63,7 @@ export function getReferences( $field: JQuery ): Reference[] {
 							}
 						} ];
 
-						const archiveDate = createTimeValue( $archiveLink.parent().text().replace( getConfig( 'mark-archived' ), '' ).trim() );
+						const archiveDate: TimeValue = createTimeValue( $archiveLink.parent().text().replace( getConfig( 'mark-archived' ), '' ).trim() );
 						if ( archiveDate ) {
 							source.snaks.P2960 = [ {
 								property: 'P2960',

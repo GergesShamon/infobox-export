@@ -96,7 +96,7 @@ export async function addQualifiers( $field: JQuery, statement: Statement ): Pro
 	const $qualifiers: JQuery = $field.find( '[data-wikidata-qualifier-id]' );
 
 	const qualifierTitles: KeyValue = {};
-	for ( let q = 0; q < $qualifiers.length; q++ ) {
+	for ( let q: number = 0; q < $qualifiers.length; q++ ) {
 		const $qualifier: JQuery = $( $qualifiers[ q ] );
 		const qualifierId: PropertyId = $qualifier.data( 'wikidata-qualifier-id' );
 		let qualifierValue: Value | void = $qualifier.text().replace( /\n/g, ' ' ).trim();
@@ -147,7 +147,7 @@ export async function prepareCommonsMedia( context: Context ): Promise<Statement
 	const statements: Statement[] = [];
 	const $imgs: JQuery = context.$field.find( 'img' );
 	const imgs: JQuery[] = [];
-	$imgs.each( function () {
+	$imgs.each( function (): void {
 		imgs.push( $( this ) );
 	} );
 	const references: Reference[] = getReferences( context.$wrapper );
@@ -158,7 +158,7 @@ export async function prepareCommonsMedia( context: Context ): Promise<Statement
 			return;
 		}
 		const srcParts: string[] = src.split( '/' );
-		let fileName = srcParts.pop();
+		let fileName: string = srcParts.pop();
 		if ( fileName.match( /(?:^|-)\d+px-/ ) ) {
 			fileName = srcParts.pop();
 		}
@@ -204,7 +204,7 @@ export async function prepareExternalId( context: Context ): Promise<Statement[]
 		return [];
 	}
 
-	const sparql = `SELECT ?item WHERE { ?item wdt:${ context.propertyId } "${ externalId }" } LIMIT 1`;
+	const sparql: string = `SELECT ?item WHERE { ?item wdt:${ context.propertyId } "${ externalId }" } LIMIT 1`;
 	const data: SparqlResponse = await sparqlRequest( sparql );
 	if ( data.results.bindings.length ) {
 		const url: string = data.results.bindings[ 0 ].item.value;
@@ -236,7 +236,7 @@ export function prepareMonolingualText( context: Context ): Statement[] {
 	const values: { [ key: string ]: MonolingualTextValue } = {};
 	const statements: Statement[] = [];
 	let $items: JQuery = context.$field.find( 'span[lang], i[lang]' );
-	$items.each( function () {
+	$items.each( function (): void {
 		const $item: JQuery = $( this );
 		const language: string = $item.attr( 'lang' ).trim();
 		values[ language ] = {
@@ -245,10 +245,10 @@ export function prepareMonolingualText( context: Context ): Statement[] {
 		};
 	} );
 	if ( !Object.values( values ).length ) {
-		const text = context.$field.text().trim();
+		const text: string = context.$field.text().trim();
 		if ( text ) {
 			$items = mw.util.$content.find( 'span[lang]' );
-			$items.each( function () {
+			$items.each( function (): void {
 				const $item: JQuery = $( this );
 				if ( $item.text().trim().startsWith( text ) ) {
 					const language: string = $item.attr( 'lang' ).trim();

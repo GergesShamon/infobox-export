@@ -89,7 +89,7 @@ function parseGeohackParams( url: string ): ( number | null )[] {
 export async function prepareGlobeCoordinate( context: Context ): Promise<Statement[]> {
 	const statements: Statement[] = [];
 	const $links: JQuery = context.$field.find( 'a' );
-	$links.each( function () {
+	$links.each( function (): false | void {
 		const $link: JQuery = $( this );
 		let latitude: number | null = null;
 		let longitude: number | null = null;

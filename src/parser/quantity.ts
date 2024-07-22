@@ -156,7 +156,7 @@ export function parseQuantity( text: string, propertyId: PropertyId, forceIntege
 	};
 
 	// Sourcing circumstances (P1480) = circa (Q5727902)
-	const circaMatch = text.match( getConfig( 're-circa' ) );
+	const circaMatch: RegExpMatchArray = text.match( getConfig( 're-circa' ) );
 	if ( circaMatch ) {
 		statement.qualifiers = {
 			P1480: [
@@ -186,8 +186,8 @@ async function recognizeUnits( text: string, units: KeyValue, label?: string ): 
 		if ( !search?.length ) {
 			continue;
 		}
-		for ( let j = 0; j < search.length; j++ ) {
-			let expr = search[ j ];
+		for ( let j: number = 0; j < search.length; j++ ) {
+			let expr: string = search[ j ];
 			if ( search[ j ].charAt( 0 ) !== '^' ) {
 				if ( search[ j ].length < 5 ) {
 					expr = `^${ expr }|[\\d\\s\\.]${ expr }\\.?$`;
@@ -203,7 +203,7 @@ async function recognizeUnits( text: string, units: KeyValue, label?: string ): 
 			if ( search[ j ].charAt( 0 ) === '^' || label === undefined ) {
 				continue;
 			}
-			const labelRegExp = new RegExp( `\\s${ search[ j ] }:?$` );
+			const labelRegExp: RegExp = new RegExp( `\\s${ search[ j ] }:?$` );
 			if ( label.match( labelRegExp ) ) {
 				result.push( `http://www.wikidata.org/entity/${ itemId }` );
 				break;
@@ -219,7 +219,7 @@ async function removeUnitString( text: string, unit: Unit ): Promise<string> {
 	}
 	const itemId: ItemId = unit.replace( /^.+\/(Q\d+)$/, '$1' ) as ItemId;
 	const searches: string[] = await getOrLoadUnit( itemId );
-	searches.forEach( function ( search: string ) {
+	searches.forEach( function ( search: string ): void {
 		text = text.replace( search, '' );
 	} );
 	return text;
@@ -237,8 +237,8 @@ export async function prepareQuantity( context: Context ): Promise<Statement[]> 
 	const match: string[] = text.replace( getConfig( 're-min-sec' ), '$1:$2' )
 		.match( /^(?:(\d+):)?(\d+):(\d+)$/ );
 	if ( match ) {
-		let amount = 0;
-		for ( let i = 1; i < match.length; i++ ) {
+		let amount: number = 0;
+		for ( let i: number = 1; i < match.length; i++ ) {
 			if ( match[ i ] !== undefined ) {
 				amount = amount * 60 + parseInt( match[ i ], 10 );
 			}
@@ -255,7 +255,7 @@ export async function prepareQuantity( context: Context ): Promise<Statement[]> 
 	}
 
 	const forceInteger: boolean = property?.constraints?.integer || false;
-	for ( let u = 0; u < foundUnits.length; u++ ) {
+	for ( let u: number = 0; u < foundUnits.length; u++ ) {
 		const textWithoutUnit: string = await removeUnitString( text, foundUnits[ u ] );
 		let statement: Statement | void = parseQuantity( textWithoutUnit, context.propertyId, forceInteger );
 		if ( !statement ) {
@@ -300,7 +300,7 @@ export async function prepareQuantity( context: Context ): Promise<Statement[]> 
 				const qualifierQuantitySnak: Snak = qualifierTempStatement.mainsnak;
 				const qualifierQuantity: QuantityValue = qualifierQuantitySnak.datavalue.value as QuantityValue;
 				const supportedProperties: PropertyId[] = [ 'P2076', 'P2077' ];
-				for ( let j = 0; j < supportedProperties.length; j++ ) {
+				for ( let j: number = 0; j < supportedProperties.length; j++ ) {
 					const supportedProperty: Property | undefined = await getOrLoadProperty( supportedProperties[ j ] );
 					const units: ItemId[] = supportedProperty?.units || [];
 					if ( units.length === 1 ) {
@@ -328,7 +328,7 @@ export async function prepareQuantity( context: Context ): Promise<Statement[]> 
 }
 
 export function canExportQuantity( statements: Statement[], $field: JQuery ): boolean {
-	for ( let i = 0; i < Object.keys( statements ).length; i++ ) {
+	for ( let i: number = 0; i < Object.keys( statements ).length; i++ ) {
 		const parsedTime: TimeValue | void = createTimeValue( ( $field.text().match( /\(([^)]*\d{4})[,)\s]/ ) || [] )[ 1 ] );
 		if ( parsedTime && statements[ i ].qualifiers?.P585 ) {
 			const pointInTimeValue: TimeValue = statements[ i ].qualifiers.P585[ 0 ].datavalue.value as TimeValue;

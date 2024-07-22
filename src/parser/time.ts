@@ -15,8 +15,8 @@ const startEndPropertyMapping: KeyValue = {
 };
 
 export function guessDateAndPrecision( timestamp: string ): TimeGuess {
-	let dateParts = timestamp.match( getConfig( 're-century' ) );
-	let isoDate;
+	let dateParts: RegExpMatchArray = timestamp.match( getConfig( 're-century' ) );
+	let isoDate: Date;
 	if ( dateParts ) {
 		isoDate = new Date( 0 );
 		isoDate.setFullYear( getConfig( 'centuries' ).indexOf( dateParts[ 1 ].toUpperCase() ) * 100 + 100 );
@@ -157,7 +157,7 @@ export function guessDateAndPrecision( timestamp: string ): TimeGuess {
 
 export function createTimeString( time: Date, precision: number ): string {
 	if ( precision <= 8 ) {
-		let year = time.getFullYear();
+		let year: number = time.getFullYear();
 		year -= year % 10 ** ( 9 - precision );
 		time.setFullYear( year );
 	}
@@ -166,7 +166,7 @@ export function createTimeString( time: Date, precision: number ): string {
 	time.setUTCMinutes( 0 );
 	time.setUTCSeconds( 0 );
 
-	let result = time.toISOString().replace( /\.000Z/, 'Z' );
+	let result: string = time.toISOString().replace( /\.000Z/, 'Z' );
 
 	if ( precision <= 10 ) {
 		result = result.replace( /-\d\dT/, '-00T' );
@@ -214,13 +214,13 @@ export function createTimeValue( timestamp: string, forceJulian?: boolean ): Tim
 	}
 	timestamp = timestamp.replace( /\([^)]*\)/, '' ).trim();
 
-	let isBce = false;
-	const bceMatch = timestamp.match( getConfig( 're-bce' ) );
+	let isBce: boolean = false;
+	const bceMatch: RegExpMatchArray = timestamp.match( getConfig( 're-bce' ) );
 	if ( bceMatch ) {
 		isBce = true;
 		timestamp = timestamp.replace( bceMatch[ 0 ], '' ).trim();
 	} else {
-		const ceMatch = timestamp.match( getConfig( 're-ce' ) );
+		const ceMatch: RegExpMatchArray = timestamp.match( getConfig( 're-ce' ) );
 		if ( ceMatch ) {
 			timestamp = timestamp.replace( ceMatch[ 0 ], '' ).trim();
 		}

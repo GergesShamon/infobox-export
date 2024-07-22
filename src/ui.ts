@@ -58,7 +58,7 @@ async function getPropertyFieldset( propertyId: PropertyId, statements: Statemen
 		label: $labelLink
 	} );
 	let firstSelected: boolean = false;
-	for ( let i = 0; i < statements.length; i++ ) {
+	for ( let i: number = 0; i < statements.length; i++ ) {
 		const statement: Statement = statements[ i ];
 
 		const $label: JQuery = await formatSnak( statement.mainsnak );
@@ -108,7 +108,7 @@ async function getPropertyFieldset( propertyId: PropertyId, statements: Statemen
 			const $subclassText: JQuery = $( '<div>' );
 			getI18n( 'more-precise-value' )
 				.split( /(\$\d+)/ )
-				.forEach( function ( part: string ) {
+				.forEach( function ( part: string ): void {
 					if ( part === '$1' ) {
 						$subclassText.append( $userSubclassLabel );
 					} else {
@@ -202,7 +202,7 @@ async function getFormPanel( statements: Statement[] ): Promise<any> {
 			]
 		}
 	} );
-	configMenuButton.getMenu().on( 'select', ( item: any ) => {
+	configMenuButton.getMenu().on( 'select', ( item: any ): void => {
 		if ( !item ) {
 			return;
 		}
@@ -240,7 +240,7 @@ async function getFormPanel( statements: Statement[] ): Promise<any> {
 function collectFormData( formPanel: any ): Statement[] {
 	const $checkboxes: JQuery = formPanel.$element.find( 'input[type=checkbox]:checked:enabled' );
 	const statements: Statement[] = [];
-	$checkboxes.each( function ( index, checkbox ) {
+	$checkboxes.each( function ( index: number, checkbox: HTMLElement ): void {
 		const $checkbox: JQuery = $( checkbox );
 		const jsonStatement: string = $checkbox.attr( 'value' );
 		const statement: Statement = JSON.parse( jsonStatement );
@@ -255,15 +255,15 @@ function collectFormData( formPanel: any ): Statement[] {
  * Create all statements in Wikidata and disable processed checkboxes
  */
 async function createClaims( statements: Statement[] ): Promise<void> {
-	const SUCCESS_COLOR = '#c8ccd1';
+	const SUCCESS_COLOR: string = '#c8ccd1';
 	let propertyIds: PropertyId[] = [];
 	const totalCount: number = statements.length;
 	while ( statements.length ) {
 		const statement: Statement = statements.shift();
 
-		const $checkbox = statement.meta.$checkbox;
+		const $checkbox: JQuery = statement.meta.$checkbox;
 		$checkbox.prop( 'disabled', true );
-		const $fakeCheckbox = statement.meta.$checkbox.parent().find( 'span' );
+		const $fakeCheckbox: JQuery<HTMLSpanElement> = statement.meta.$checkbox.parent().find( 'span' );
 
 		const propertyId: PropertyId = statement.mainsnak.property;
 		propertyIds.push( propertyId );
@@ -299,7 +299,7 @@ async function createClaims( statements: Statement[] ): Promise<void> {
 	// Delay for the user to see the last green checkbox
 	await sleep( 450 );
 
-	mw.loader.using( 'mediawiki.action.view.postEdit', function () {
+	mw.loader.using( 'mediawiki.action.view.postEdit', function (): void {
 		mw.hook( 'postEdit' ).fire( {
 			message: getI18n( totalCount > 1 ? 'all-values-saved' : 'value-saved' )
 		} );
@@ -309,7 +309,7 @@ async function createClaims( statements: Statement[] ): Promise<void> {
 /**
  * Display a dialog to confirm export
  */
-export async function showDialog( statements: Statement[] ) {
+export async function showDialog( statements: Statement[] ): Promise<void> {
 	if ( !statements || !statements.length ) {
 		mw.notify( getI18n( 'parsing-error' ), {
 			type: 'error',
@@ -324,7 +324,7 @@ export async function showDialog( statements: Statement[] ) {
 	} = require( 'ooui' );
 
 	// Create a dialog
-	const ExtProcessDialog: any = function ( config: any ) {
+	const ExtProcessDialog: any = function ( config: any ): void {
 		ExtProcessDialog.super.call( this, config );
 	};
 	inheritClass( ExtProcessDialog, ProcessDialog );
@@ -339,7 +339,7 @@ export async function showDialog( statements: Statement[] ) {
 
 	const formPanel = await getFormPanel( statements );
 
-	ExtProcessDialog.prototype.initialize = function () {
+	ExtProcessDialog.prototype.initialize = function (): void {
 		ExtProcessDialog.super.prototype.initialize.apply( this, arguments );
 		this.content = formPanel;
 		this.$body.append( this.content.$element );
@@ -348,10 +348,10 @@ export async function showDialog( statements: Statement[] ) {
 		this.$body.css( 'background', 'var(--background-color-base, #fff)' );
 	};
 
-	ExtProcessDialog.prototype.getActionProcess = function ( action: string ) {
+	ExtProcessDialog.prototype.getActionProcess = function ( action: string ): any {
 		const dialog = this;
 		if ( action === 'export' ) {
-			return new Process( async function () {
+			return new Process( async function (): Promise<void> {
 				const exportAction = dialog.actions.get( { actions: 'export' } )[ 0 ];
 				exportAction.setDisabled( true );
 

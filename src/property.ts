@@ -67,7 +67,7 @@ export async function preloadAvailableProperties( typeIds: ItemId[] ): Promise<v
 			return;
 		}
 
-		for ( let i = 0; i < data.results.bindings.length; i++ ) {
+		for ( let i: number = 0; i < data.results.bindings.length; i++ ) {
 			const bindings: SparqlBindings = data.results.bindings[ i ];
 			const propertyId: PropertyId = bindings.pid.value as PropertyId;
 			availablePropertiesSet.add( propertyId );
@@ -107,7 +107,7 @@ export async function guessPropertyIdByLabel( $label: JQuery, itemId: ItemId, cl
 		if ( typeIds.length ) {
 			const replacementIds: ( PropertyId | null )[] = typeIds.map(
 				( typeId: ItemId ) => property.constraints.noneOfTypes[ typeId ]
-			).filter( ( replacementIds: PropertyId ) => replacementIds !== undefined );
+			).filter( ( replacementIds: PropertyId ): boolean => replacementIds !== undefined );
 			if ( replacementIds.length ) {
 				const replacementId: PropertyId = replacementIds.pop();
 				if ( replacementId ) {

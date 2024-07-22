@@ -58,7 +58,7 @@ export async function filterItemStatements( propertyId: PropertyId, statements: 
 	}
 
 	if ( property.constraints.noneOfValues ) {
-		statements = statements.map( ( statement: Statement ) => {
+		statements = statements.map( ( statement: Statement ): Statement | null => {
 			const itemId: ItemId = ( statement.mainsnak.datavalue.value as ItemValue ).id;
 			if ( typeof property.constraints.noneOfValues[ itemId ] === 'undefined' ) {
 				return statement;
@@ -68,7 +68,7 @@ export async function filterItemStatements( propertyId: PropertyId, statements: 
 			}
 			statement.mainsnak = generateItemSnak( propertyId, property.constraints.noneOfValues[ itemId ] );
 			return statement;
-		} ).filter( ( statement: Statement | null ) => ( statement !== null ) );
+		} ).filter( ( statement: Statement | null ): boolean => ( statement !== null ) );
 	}
 
 	if ( property.constraints.oneOfValues && property.constraints.oneOfValues.length ) {
@@ -87,7 +87,7 @@ export async function filterItemStatements( propertyId: PropertyId, statements: 
 		const data: SparqlResponse = await sparqlRequest( sparql );
 		const validItemIds: ItemId[] = [];
 
-		for ( let i = 0; i < data.results.bindings.length; i++ ) {
+		for ( let i: number = 0; i < data.results.bindings.length; i++ ) {
 			const itemId: ItemId = data.results.bindings[ i ].item.value.replace( /^.+\/(Q\d+)$/, '$1' ) as ItemId;
 			validItemIds.push( itemId );
 		}
@@ -105,7 +105,7 @@ export async function parseItem( context: Context ): Promise<Statement[]> {
 
 	const fixedValues: FixedValue[] = getConfig( 'fixed-values' );
 	const references: Reference[] = getReferences( context.$wrapper );
-	for ( let k = 0; k < fixedValues.length; k++ ) {
+	for ( let k: number = 0; k < fixedValues.length; k++ ) {
 		const fixedValue: FixedValue = fixedValues[ k ];
 		const regexp: RegExp = new RegExp( fixedValue.search );
 		if (
@@ -122,7 +122,7 @@ export async function parseItem( context: Context ): Promise<Statement[]> {
 	const redirects: string[] = [];
 
 	if ( $links.length ) {
-		for ( let j = 0; j < $links.length; j++ ) {
+		for ( let j: number = 0; j < $links.length; j++ ) {
 			const $link: JQuery = $( $links[ j ] );
 			if ( $link.parents( '[data-wikidata-qualifier-id]' ).length ) {
 				continue;
@@ -191,8 +191,8 @@ export async function parseItem( context: Context ): Promise<Statement[]> {
 			titles: redirects
 		} );
 		if ( data.query && data.query.redirects ) {
-			for ( let i = 0; i < data.query.redirects.length; i++ ) {
-				for ( let j = 0; j < titles.length; j++ ) {
+			for ( let i: number = 0; i < data.query.redirects.length; i++ ) {
+				for ( let j: number = 0; j < titles.length; j++ ) {
 					const lcTitle: string = lowercaseFirst( titles[ j ].label );
 					const lcRedirect: string = lowercaseFirst( data.query.redirects[ i ].from );
 					if ( lcTitle === lcRedirect ) {
@@ -209,7 +209,7 @@ export async function parseItem( context: Context ): Promise<Statement[]> {
 		}
 	}
 
-	let statements = await getStatements( context.propertyId, titles, references );
+	let statements: Statement[] = await getStatements( context.propertyId, titles, references );
 	statements = await filterItemStatements( context.propertyId, statements );
 	if ( statements.length === 1 ) {
 		statements[ 0 ] = await addQualifiers( context.$field, statements[ 0 ] );
@@ -229,12 +229,12 @@ export async function canExportItem( propertyId: PropertyId, wikidataStatements:
 	const localStatements: Statement[] = await parseItem( context );
 	alreadyExistingItems[ propertyId ] = [];
 	const invalidValues: Set<ItemId> = new Set();
-	for ( let i = 0; i < localStatements.length; i++ ) {
+	for ( let i: number = 0; i < localStatements.length; i++ ) {
 		const localValue: ItemValue = localStatements[ i ].mainsnak.datavalue.value as ItemValue;
 		if ( localStatements[ i ].meta?.subclassItem ) {
 			invalidValues.add( localValue.id );
 		}
-		for ( let j = 0; j < wikidataStatements.length; j++ ) {
+		for ( let j: number = 0; j < wikidataStatements.length; j++ ) {
 			const existingValue: ItemValue = wikidataStatements[ j ].mainsnak.datavalue?.value as ItemValue | undefined;
 			if ( existingValue?.id === undefined ) {
 				continue;

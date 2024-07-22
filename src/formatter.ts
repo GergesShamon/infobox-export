@@ -38,7 +38,7 @@ function formatReference( reference: Reference ): JQuery | void {
 
 export function formatReferences( references: Reference[] ): JQuery {
 	const $result: JQuery = $( '<span>' );
-	for ( let i = 0; i < references.length; i++ ) {
+	for ( let i: number = 0; i < references.length; i++ ) {
 		const $refSup: JQuery | void = formatReference( references[ i ] );
 		if ( $refSup ) {
 			$result.append( $refSup );
@@ -120,10 +120,10 @@ function formatTimeValue( value: TimeValue ): JQuery {
 		if ( value.precision > 10 ) {
 			options.day = 'numeric';
 		}
-		const parsedDate = new Date( Date.parse( value.time.slice( 1 ).replace( /-00/g, '-01' ) ) );
+		const parsedDate: Date = new Date( Date.parse( value.time.slice( 1 ).replace( /-00/g, '-01' ) ) );
 		dateString = parsedDate.toLocaleString( userLanguage, options ) + ( value.precision === 8 ? getI18n( 'decade-postfix' ) : '' ) + bceMark;
 	}
-	const calendar = value.calendarmodel.includes( '1985727' ) ? getI18n( 'grigorian-calendar' ) : getI18n( 'julian-calendar' );
+	const calendar: string = value.calendarmodel.includes( '1985727' ) ? getI18n( 'grigorian-calendar' ) : getI18n( 'julian-calendar' );
 
 	$label
 		.append( $( '<strong>' ).text( dateString ) )

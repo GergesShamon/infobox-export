@@ -103,7 +103,7 @@ export async function loadItemLabels( itemIds: ItemId[] ): Promise<void> {
 		languages: allLanguages,
 		props: [ 'labels', 'descriptions' ]
 	} );
-	for ( let i = 0; i < missedItemIds.length; i++ ) {
+	for ( let i: number = 0; i < missedItemIds.length; i++ ) {
 		const itemId: ItemId = itemIds[ i ];
 		setItemLabel( itemId, data.entities[ itemId ] );
 	}
@@ -198,7 +198,7 @@ export async function getStatements( propertyId: PropertyId, titles: Title[], re
 		}
 
 		const lowerLabel: string = getLabelValue( entity.labels, [ contentLanguage, userLanguage ] ).toLowerCase();
-		const relatedTitles: Title[] = titles.filter( function ( title: Title ) {
+		const relatedTitles: Title[] = titles.filter( function ( title: Title ): boolean {
 			if ( title.label.toLowerCase() === lowerLabel ) {
 				return true;
 			}
@@ -222,12 +222,12 @@ export async function getStatements( propertyId: PropertyId, titles: Title[], re
 	}
 
 	const badRedirectItemIds: ItemId[] = [];
-	for ( let i = 0; i < statements.length; i++ ) {
+	for ( let i: number = 0; i < statements.length; i++ ) {
 		const title: Title | undefined = statements[ i ]?.meta?.title;
 		if ( !title?.redirect ) {
 			continue;
 		}
-		statements.forEach( function ( statement: Statement ) {
+		statements.forEach( function ( statement: Statement ): void {
 			if ( statement?.meta?.title?.label === title?.redirect &&
 				statement?.meta?.title?.project === title.project &&
 				statement.mainsnak.snaktype === 'value'
@@ -306,5 +306,4 @@ export function getItemPropertyValues( claims: ClaimsObject | undefined, propert
 	return claims[ propertyId ].map(
 		( statement: Statement ) => ( statement.mainsnak.datavalue?.value as ItemValue | undefined )?.id
 	).filter( ( itemId: ItemId ) => itemId );
-
 }

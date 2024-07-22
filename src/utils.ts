@@ -6,7 +6,7 @@ import type { ItemId, PropertyId, Unit } from './types/wikidata/types';
  */
 export function unique( array: any[] ): any[] {
 	const $ = require( 'jquery' );
-	return $.grep( array, function ( el: any, index: number ) {
+	return $.grep( array, function ( el: any, index: number ): boolean {
 		return index === $.inArray( el, array );
 	} );
 }
@@ -109,12 +109,12 @@ export async function bulkQueryIndexedDB( storeName: string, ids: ( ItemId | Pro
 		return [];
 	}
 	return new Promise(
-		function ( resolve, reject ) {
+		function ( resolve, reject ): void {
 			const openRequest: IDBOpenDBRequest = indexedDB.open( storeName, 3 );
 
 			openRequest.onerror = () => reject( Error( 'IndexedDB error: ' + openRequest.error ) );
 
-			openRequest.onupgradeneeded = function () {
+			openRequest.onupgradeneeded = function (): void {
 				const db: IDBDatabase = openRequest.result;
 				if ( db.objectStoreNames.contains( storeName ) ) {
 					db.deleteObjectStore( storeName );
@@ -123,13 +123,13 @@ export async function bulkQueryIndexedDB( storeName: string, ids: ( ItemId | Pro
 				const store: IDBObjectStore = db.createObjectStore( storeName, { keyPath: 'id' } );
 			};
 
-			openRequest.onsuccess = function () {
+			openRequest.onsuccess = function (): void {
 				const db: IDBDatabase = openRequest.result;
 				const transaction: IDBTransaction = db.transaction( [ storeName ], 'readonly' );
 				const objectStore: IDBObjectStore = transaction.objectStore( storeName );
 
 				Promise.all( ids.map(
-					( id: ItemId | PropertyId ) => new Promise( ( resolve, reject ) => {
+					( id: ItemId | PropertyId ) => new Promise( ( resolve, reject ): void => {
 						const objectRequest: IDBRequest = objectStore.get( id );
 						objectRequest.onerror = () => reject( Error( 'IDBObjectStore error: ' + objectRequest.error ) );
 						objectRequest.onsuccess = () => ( resolve( objectRequest.result ) );
@@ -145,14 +145,14 @@ export async function bulkInsertIndexedDB( storeName: string, data: any[] ): Pro
 		return;
 	}
 	return new Promise(
-		function ( resolve, reject ) {
+		function ( resolve, reject ): void {
 			const openRequest: IDBOpenDBRequest = indexedDB.open( storeName, 3 );
 
-			openRequest.onerror = function () {
+			openRequest.onerror = function (): void {
 				reject( Error( 'IndexedDB error: ' + openRequest.error ) );
 			};
 
-			openRequest.onupgradeneeded = function () {
+			openRequest.onupgradeneeded = function (): void {
 				const db: IDBDatabase = openRequest.result;
 				if ( db.objectStoreNames.contains( storeName ) ) {
 					db.deleteObjectStore( storeName );
@@ -161,7 +161,7 @@ export async function bulkInsertIndexedDB( storeName: string, data: any[] ): Pro
 				const store: IDBObjectStore = db.createObjectStore( storeName, { keyPath: 'id' } );
 			};
 
-			openRequest.onsuccess = function () {
+			openRequest.onsuccess = function (): void {
 				const db: IDBDatabase = openRequest.result;
 				const transaction: IDBTransaction = db.transaction( [ storeName ], 'readwrite' );
 				const objectStore: IDBObjectStore = transaction.objectStore( storeName );
