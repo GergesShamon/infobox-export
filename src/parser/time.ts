@@ -213,6 +213,8 @@ export function createTimeValue( timestamp: string, forceJulian?: boolean ): Tim
 		forceJulian = true;
 	}
 	timestamp = timestamp.replace( /\([^)]*\)/, '' ).trim();
+	timestamp.replace( /[٠-٩]/g, ( d: string ) => '٠١٢٣٤٥٦٧٨٩'.indexOf( d ).toString() ); // Eastern Arabic
+	timestamp.replace( /[۰-۹]/g, ( d: string ) => '۰۱۲۳۴۵۶۷۸۹'.indexOf( d ).toString() ); // Persian
 
 	let isBce: boolean = false;
 	const bceMatch: RegExpMatchArray = timestamp.match( getConfig( 're-bce' ) );
