@@ -1,23 +1,27 @@
-.infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata {
-    background-color: var(--background-color-error-subtle, #fee7e6);
-    border: 1px solid #f6bab9;
+.infobox-export:not( .vertical-navbox, .ve-ce-leafNode ):not( [ data-from ] ) .no-wikidata {
+    background-color: var( --background-color-error-subtle, #fee7e6 );
+    border: 1px dashed var( --border-color-destructive, #d73333 );
     border-radius: 2px;
     padding: 3px 6px;
 }
 
-.infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) span.no-wikidata {
+.infobox-export:not( .vertical-navbox, .ve-ce-leafNode ):not( [ data-from ] ) .no-wikidata:hover {
+    border-color: var( --border-color-destructive--hover, #ff4242 );
+}
+
+.infobox-export:not( .vertical-navbox, .ve-ce-leafNode ):not( [ data-from ] ) span.no-wikidata {
     display: block !important;
 }
 
-.infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata.partial-wikidata {
-    background-color: var(--background-color-warning-subtle, #fef6e7);
-    border-color: #ffd760;
+.infobox-export:not( .vertical-navbox, .ve-ce-leafNode ):not( [ data-from ] ) .no-wikidata.partial-wikidata {
+    background-color: var( --background-color-warning-subtle, #fef6e7 );
+    border-color: var( --border-color-warning, #a66200 );
 }
 
-.infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata .no-wikidata {
+.infobox-export:not( .vertical-navbox, .ve-ce-leafNode ):not( [ data-from ] ) .no-wikidata .no-wikidata {
     margin: -3px -6px;
     border: 0;
-    background: transparent;
+    background: var( --background-color-transparent, transparent );
 }
 
 .infobox-export-dialog .wb-monolingualtext-value {
@@ -25,13 +29,13 @@
 }
 
 .infobox-export-dialog .wb-monolingualtext-language-name {
-    color: var(--color-subtle, #54595d);
+    color: var( --color-subtle, #54595d );
     font-weight: normal;
 }
 
 .infobox-export-calendar {
     margin-left: .25em;
-    color: var(--color-subtle, #54595d);
+    color: var( --color-subtle, #54595d );
 }
 
 .infobox-export-calendar::before {
@@ -75,16 +79,16 @@
 
 @keyframes infobox-export-spin {
     from {
-        transform: rotate(0deg);
+        transform: rotate( 0deg );
     } to {
-        transform: rotate(360deg);
+        transform: rotate( 360deg );
     }
 }
 
 .infobox-export-novalue,
 .infobox-export-somevalue {
     font-style: italic;
-    color: #54595d;
+    color: var( --color-subtle, #54595d );
 }
 
 .infobox-export-external-link {
@@ -105,30 +109,16 @@
     content: " ";
     width: 8px;
     height: 20px;
-    background: url("data:image/svg+xml,%3Csvg fill='none' height='20' viewBox='0 0 8 20' width='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 14v2.2l3.1 3.8h1.8l3.1-3.8v-2.2z' fill='%23d33'/%3E%3Cpath d='m.5 10.75v-1.5l2-1.75h3l2 1.75v1.5l-2 1.75h-3zm0-6.75v1.5h7v-1.5l-2.875-3.5h-1.25z' stroke='%23d33'/%3E%3C/svg%3E");
+    background: url( "data:image/svg+xml,%3Csvg fill='none' height='20' viewBox='0 0 8 20' width='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m0 14v2.2l3.1 3.8h1.8l3.1-3.8v-2.2z' fill='%23d33'/%3E%3Cpath d='m.5 10.75v-1.5l2-1.75h3l2 1.75v1.5l-2 1.75h-3zm0-6.75v1.5h7v-1.5l-2.875-3.5h-1.25z' stroke='%23d33'/%3E%3C/svg%3E" );
 }
 
 .infobox-export-loader {
     background-size: 200% 100%;
-    background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, #fafbfb 8px, #fafbfb 16px );
+    background-image: repeating-linear-gradient( 135deg, var( --box-shadow-color-transparent, transparent ), var( --box-shadow-color-transparent, transparent ) 8px, var( --background-color-interactive-subtle, #f8f9fa ) 8px, var( --background-color-interactive-subtle, #f8f9fa ) 16px );
     animation: infobox-export-loader 1s linear infinite;
 }
 
 .partial-wikidata.infobox-export-loader {
-    background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, #fff 8px, #fff 16px );
+    background-image: repeating-linear-gradient( 135deg, var( --box-shadow-color-transparent, transparent ), var( --box-shadow-color-transparent, transparent ) 8px, var( --box-shadow-color-inverted, #fff ) 8px, var( --box-shadow-color-inverted, #fff ) 16px );
 }
 
-@media (prefers-color-scheme: dark) {
-    .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata {
-        border-color: #b32424;
-    }
-
-    .infobox-export:not(.vertical-navbox, .ve-ce-leafNode):not([data-from]) .no-wikidata.partial-wikidata {
-        border-color: #ac6600;
-    }
-
-    .infobox-export-loader,
-    .partial-wikidata.infobox-export-loader {
-        background-image: repeating-linear-gradient(135deg, transparent, transparent 8px, var(--box-shadow-color-inverted, #000) 8px, var(--box-shadow-color-inverted, #000) 16px )
-    }
-}

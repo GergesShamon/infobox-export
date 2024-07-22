@@ -2,6 +2,12 @@
     --color-subtle: #54595d;
     --background-color-base: #fff;
     --background-color-error-subtle: #fee7e6;
+    --background-color-interactive-subtle: #f8f9fa;
+    --background-color-transparent: transparent;
     --background-color-warning-subtle: #fef6e7;
+    --border-color-destructive: #d73333;
+    --border-color-destructive--hover: #ff4242;
+    --border-color-warning: #a66200;
     --box-shadow-color-inverted: #fff;
+    --box-shadow-color-transparent: transparent;
 }
